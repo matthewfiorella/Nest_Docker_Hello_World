@@ -1,0 +1,17 @@
+import { Controller, Get, Res, HttpStatus, Param, NotFoundException, 
+    Post, Body, Put, Query, Delete } from '@nestjs/common';
+import { InputStrDTO } from './dto/input.dto';
+import { PostalService } from './postal.service';
+
+@Controller('postal')
+export class PostalController {
+    constructor(private postalService: PostalService) { }
+    // Lookup Postcode
+    @Post()
+    async lookup(@Body() inputStrDTO: InputStrDTO ) {
+        const trust = await this.postalService.lookup(inputStrDTO)
+        return ({ 
+            "trust": trust
+        });
+    }
+}

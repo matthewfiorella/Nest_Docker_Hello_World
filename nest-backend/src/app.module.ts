@@ -4,9 +4,12 @@ import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { SqrtModule } from './sqrt/sqrt.module';
+import { PostalController } from './postal/postal.controller';
+import { PostalService } from './postal/postal.service';
+import { PostalModule } from './postal/postal.module';
 
 @Module({
-  imports: [CatsModule, SqrtModule],
+  imports: [CatsModule, SqrtModule, PostalModule],
   controllers: [AppController],
   providers: [AppService],
 })
