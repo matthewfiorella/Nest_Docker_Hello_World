@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import  { withRouter, useHistory } from 'react-router-dom';
+import './HistoryTable.css';
 
 function Postal(): JSX.Element {
     let history = useHistory();
@@ -10,9 +11,15 @@ function Postal(): JSX.Element {
         success: boolean,
         value: string
     }
+    interface resHistory{
+        postal?: string,
+        health?: string,
+        time?: number,
+    }
 
     const [val, setVal] = useState<IValues>([])
     const [loading, setLoading] = useState<boolean>(false);
+    const [postalHistory, setPostalHistory] = useState<resHistory[]>( [] )
     const [submitResult, setSubmitResult] = useState<subResult>({
         success: false,
         value: "Input a Postal Code"
@@ -61,6 +68,25 @@ function Postal(): JSX.Element {
         e.preventDefault();
         setFormValues({ [e.currentTarget.name]: e.currentTarget.value })
     }
+
+    useEffect( () => {
+        fetch( "http://localhost:8000/postal").then( (val: Response) => {
+            val.json().then( (data) => {
+                const arr: resHistory[] = new Array()
+                for(let i = 0; i < 5; i++) {
+                    const hist: resHistory = {
+                        postal: String(data[i]?.PostalCode?.S),
+                        health: String(data[i]?.PrimaryHealthcareTrust?.S),
+                        time: Number(data[i]?.EntryTime?.N)
+                    }
+                    arr.push(hist)
+                }
+                setPostalHistory(arr)
+            })
+        })
+
+    }, [submitResult])
+
     return (
         <div>
         <div className={"col-md-12 form-wrapper"}>
@@ -88,10 +114,27 @@ function Postal(): JSX.Element {
                         <span className="fa fa-circle-o-notch fa-spin" />
                     }
                 </div>
+                {submitResult.success && (
                 <div className="form-group col-md-4 pull-right">
-                    {submitResult.value}
-                </div>
+                    The Primary Health Trust for {val.input} is: {submitResult.value}
+                </div>)}
             </form>
+        </div>
+        <div>
+            Previous Five Lookups
+        </div>
+        <div className='HistoryTable'>
+            <table>
+                <tr>
+                    <th> Postal Code </th>
+                    <th> Primary Health Trust </th>
+                </tr>
+                { postalHistory.map( (item) => {
+                return <tr key={item?.time}>
+                    <td> {item?.postal} </td>
+                    <td> {item?.health} </td>
+                </tr> } ) }
+            </table>
         </div>
         </div>
     );

@@ -11,7 +11,7 @@ function App(): JSX.Element {
         <BrowserRouter>
           <Switch>
             <Route path={"/sqrt"} component={Calc} />
-            <Route path={"/postal"} component={Postal} />
+            <Route path={"/"} component={Postal} />
           </Switch>
         </BrowserRouter>
         </div>

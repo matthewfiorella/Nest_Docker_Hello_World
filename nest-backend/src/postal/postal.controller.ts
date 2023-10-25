@@ -10,8 +10,14 @@ export class PostalController {
     @Post()
     async lookup(@Body() inputStrDTO: InputStrDTO ) {
         const trust = await this.postalService.lookup(inputStrDTO)
+        await this.postalService.writeDB(trust, inputStrDTO)
         return ({ 
             "trust": trust
         });
+    }
+
+    @Get()
+    async readDB() {
+        return (await this.postalService.readDB()).Items
     }
 }
