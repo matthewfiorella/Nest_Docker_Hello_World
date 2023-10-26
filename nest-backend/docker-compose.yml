@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+ dynamodb-local:
+   command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+   image: "amazon/dynamodb-local:latest"
+   container_name: dynamodb-local
+   ports:
+    - "8000:8000"
+   volumes:
+     - "./docker/dynamodb:/home/dynamodblocal/data"
+   working_dir: /home/dynamodblocal
+ nest-backend:
+   image: nest-backend
+   container_name: nest-backend-comp
+   working_dir: /app
+   volumes:
+    - ./:/app
+   command: "npm run start"
+   ports:
+     - "8080:8080"
+   depends_on:
+     - "dynamodb-local"
+   links:
+     - "dynamodb-local"
+   environment:
+     AWS_ACCESS_KEY_ID: 'id'
+     AWS_SECRET_ACCESS_KEY: 'key'
+     AWS_SESSION_TOKEN: 'token'
+     REGION: 'eu-north-1'

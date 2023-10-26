@@ -40,7 +40,7 @@ function Postal(): JSX.Element {
 
     const submitform = async (formData: {}) => {
         try {
-            const response = await fetch( "http://localhost:8000/postal", {
+            const response = await fetch( "http://localhost:8080/postal", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({
@@ -70,7 +70,7 @@ function Postal(): JSX.Element {
     }
 
     useEffect( () => {
-        fetch( "http://localhost:8000/postal").then( (val: Response) => {
+        fetch( "http://localhost:8080/postal").then( (val: Response) => {
             val.json().then( (data) => {
                 const arr: resHistory[] = new Array()
                 for(let i = 0; i < 5; i++) {

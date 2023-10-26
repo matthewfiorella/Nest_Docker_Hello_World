@@ -32,7 +32,7 @@ function Calc(): JSX.Element {
 
     const submitform = async (formData: {}) => {
         try {
-            const response = await fetch( "http://localhost:8000/sqrt", {
+            const response = await fetch( "http://localhost:8080/sqrt", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({
