@@ -26,7 +26,7 @@ function Calc(): JSX.Element {
         setVal({...val, formData})
         setLoading(false);
         setTimeout(() => {
-            history.push('/');
+            history.push('/sqrt');
         }, 1500);
     }
 
@@ -79,7 +79,7 @@ function Calc(): JSX.Element {
                     <label> Input Number </label>
                     <input type="text" id="input" onChange={(e) => handleInputChanges(e)} name="input" className="form-control" placeholder="Enter number" />
                 </div>
-                <div className="form-group col-md-4 pull-right">
+                <div className="d-flex justify-content-center">
                     <button className="btn btn-success" type="submit">
                         Calculate Square Root
                     </button>
@@ -87,7 +87,7 @@ function Calc(): JSX.Element {
                         <span className="fa fa-circle-o-notch fa-spin" />
                     }
                 </div>
-                <div className="form-group col-md-4 pull-right">
+                <div className="d-flex justify-content-center">
                     {submitResult.value}
                 </div>
             </form>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import  { withRouter, useHistory } from 'react-router-dom';
 import './HistoryTable.css';
 
@@ -34,7 +34,7 @@ function Postal(): JSX.Element {
         setVal({...val, formData})
         setLoading(false);
         setTimeout(() => {
-            history.push('/');
+            history.push('/postal');
         }, 1500);
     }
 
@@ -106,7 +106,7 @@ function Postal(): JSX.Element {
                     <label> Input Code </label>
                     <input type="text" id="input" onChange={(e) => handleInputChanges(e)} name="input" className="form-control" placeholder="Enter number" />
                 </div>
-                <div className="form-group col-md-4 pull-right">
+                <div className="d-flex justify-content-center">
                     <button className="btn btn-success" type="submit">
                         Lookup Primary Care Trust
                     </button>
@@ -115,7 +115,7 @@ function Postal(): JSX.Element {
                     }
                 </div>
                 {submitResult.success && (
-                <div className="form-group col-md-4 pull-right">
+                <div className="d-flex justify-content-center">
                     The Primary Health Trust for {val.input} is: {submitResult.value}
                 </div>)}
             </form>
