@@ -7,9 +7,11 @@ import { SqrtModule } from './sqrt/sqrt.module';
 import { PostalController } from './postal/postal.controller';
 import { PostalService } from './postal/postal.service';
 import { PostalModule } from './postal/postal.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [CatsModule, SqrtModule, PostalModule],
+  imports: [CatsModule, SqrtModule, PostalModule, AuthModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })

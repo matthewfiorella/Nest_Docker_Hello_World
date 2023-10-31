@@ -13,8 +13,6 @@ services:
    image: nest-backend
    container_name: nest-backend-comp
    working_dir: /app
-   volumes:
-    - ./:/app
    command: "npm run start"
    ports:
      - "8080:8080"

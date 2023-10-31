@@ -14,6 +14,7 @@ log4js.configure({
 });
 logger.level = "debug"
 logger.debug("Postal Information Log")
+// Move to separate file
 const client = new DynamoDBClient({
                                     region: "eu-north-1", 
                                     endpoint: "http://dynamodb-local:8000/",
@@ -23,7 +24,7 @@ const client = new DynamoDBClient({
                                         secretAccessKey: "key",
                                     }
                                 });
-const docClient = DynamoDBDocumentClient.from(client);
+export const docClient = DynamoDBDocumentClient.from(client);
 
 @Injectable()
 export class PostalService {
