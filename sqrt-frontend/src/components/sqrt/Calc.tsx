@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import  { withRouter, useHistory } from 'react-router-dom';
-
+import useToken from '../../customHooks/useToken';
 function Calc(): JSX.Element {
     let history = useHistory();
     interface IValues {
@@ -10,6 +10,7 @@ function Calc(): JSX.Element {
         success: boolean,
         value: string
     }
+    const { token, setToken } = useToken();
     const [val, setVal] = useState<IValues>([])
     const [loading, setLoading] = useState<boolean>(false);
     const [submitResult, setSubmitResult] = useState<subResult>({
@@ -31,13 +32,21 @@ function Calc(): JSX.Element {
     }
 
     const submitform = async (formData: {}) => {
+        const tokenString = sessionStorage.getItem('token');
+        let dummy = "placeholder"
+        if (tokenString) {
+            dummy = tokenString
+        }
+        const userToken = JSON.parse(dummy);
+        const tokenPractical = userToken?.access_token
         try {
             const response = await fetch( "http://localhost:8080/sqrt", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({
                     "Content-Type": "application/json",
-                    "Accept": "application/json"
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + tokenPractical,
                 }),
                 body: JSON.stringify(formData)
             });
