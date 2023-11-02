@@ -31,8 +31,6 @@ services:
    image: sqrt-frontend
    container_name: nest-frontend-comp
    working_dir: /app
-   volumes:
-    - ./sqrt-frontend:/app
    command: "npm start"
    ports:
     - "3000:3000"
