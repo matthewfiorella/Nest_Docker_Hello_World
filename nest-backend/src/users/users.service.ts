@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { docClient } from '../postal/postal.service'
 import { DynamoDBClient, QueryCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { PutCommand, GetCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import * as uuid from 'uuid';
 import * as log4js from "log4js";
 
 var logger = log4js.getLogger("user")
@@ -41,13 +42,16 @@ export class UsersService {
         }
     }
 
-    async registerUser(username: string, hashedPassword: string) {
+    async registerUser(email: string, username: string, hashedPassword: string) {
         logger.debug("Creating user: " + username)
+        const uid = uuid.v1()
         const command = new PutCommand({
             TableName: "Users",
             Item: {
+                Id: uid,
                 Username: username,
                 Password: hashedPassword,
+                Email: email
             },
             ConditionExpression: "attribute_not_exists(Username)",
         });
@@ -57,6 +61,8 @@ export class UsersService {
             logger.debug(response);
             return {
                 username: username,
+                email: email,
+                id: uid,
                 success: true,
             };
         } catch (err) {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { userTokenType } from '../../customHooks/userTokenInterface';
 
 async function loginUser(credentials: {}) {
-    return fetch('http://localhost:8080/auth/login', {
+    return fetch('http://localhost:8080/users/auth', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -23,9 +23,10 @@ export default function Login( {setToken}: {setToken: (arg: userTokenType) => vo
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const token = await loginUser({
-      username,
-      password
+      username: username,
+      password: password
     });
+    console.log(token)
     setToken(token);
   }
 
@@ -54,15 +55,13 @@ export default function Login( {setToken}: {setToken: (arg: userTokenType) => vo
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-              Email address
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              Username
             </label>
             <div className="mt-2">
               <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
+                id="username"
+                name="username"
                 required
                 onChange={e => setUserName(e.target.value)}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -94,7 +93,7 @@ export default function Login( {setToken}: {setToken: (arg: userTokenType) => vo
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Register
+              Login
             </button>
           </div>
         </form>

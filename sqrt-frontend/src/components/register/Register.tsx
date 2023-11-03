@@ -15,6 +15,7 @@
 import React, { useState } from 'react';
 import { userTokenType } from '../../customHooks/userTokenInterface';
 import useToken from '../../customHooks/useToken';
+import { useHistory } from 'react-router';
 
 async function loginUser(credentials: {}) {
     return fetch('http://localhost:8080/auth/login', {
@@ -43,20 +44,18 @@ async function registerUser(credentials: {}) {
 
 export default function Register() {
     const [username, setUserName] = useState<string>();
+    const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
     const {token, setToken} = useToken();
+    const history = useHistory();
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const user = await registerUser({
+            email,
             username,
             password
         })
-        console.log(user)
-        const token = await loginUser({
-          username,
-          password
-        });
-        setToken(token);
+        history.push("/verify")
       }
 
     return (
@@ -94,12 +93,27 @@ export default function Register() {
                     type="email"
                     autoComplete="email"
                     required
-                    onChange={e => setUserName(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
   
+              <div>
+                <label className="block text-sm font-medium leading-6 text-gray-900">
+                  Username
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="username"
+                    name="username"
+                    required
+                    onChange={e => setUserName(e.target.value)}
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
               <div>
                 <div>
                   <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
