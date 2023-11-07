@@ -6,6 +6,6 @@ import { PostalController } from './postal.controller';
 @Module({
     imports: [HttpModule],
     providers: [PostalService],
-    controllers: [PostalController]
+    controllers: [PostalController],
 })
 export class PostalModule {}

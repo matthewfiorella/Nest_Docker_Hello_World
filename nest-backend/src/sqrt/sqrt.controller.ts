@@ -3,7 +3,7 @@ import { Controller, Get, Res, HttpStatus, Param, NotFoundException,
 import { SqrtService } from './sqrt.service';
 import { InputStrDTO } from './dto/input.dto'
 import { ValidateString } from './shared/pipes/validate-string.pipes';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('sqrt')
 export class SqrtController {
     constructor(private sqrtService: SqrtService) { }

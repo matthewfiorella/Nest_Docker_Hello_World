@@ -1,5 +1,4 @@
-import { Controller, Get, Res, HttpStatus, Param, NotFoundException, 
-    Post, Body, Put, Query, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { InputStrDTO } from './dto/input.dto';
 import { PostalService } from './postal.service';
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { docClient } from '../postal/postal.service'
 import { DynamoDBClient, QueryCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { PutCommand, GetCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import * as log4js from "log4js";
@@ -12,6 +11,17 @@ log4js.configure({
 logger.level = "debug"
 logger.debug("User Creation Information Log")
 export type User = any
+
+const client = new DynamoDBClient({
+    region: "eu-north-1", 
+    endpoint: "http://dynamodb-local:8000/",
+    credentials: {
+        sessionToken: "token",
+        accessKeyId: "id",
+        secretAccessKey: "key",
+    }
+});
+const docClient = DynamoDBDocumentClient.from(client);
 
 @Injectable()
 export class UsersService {

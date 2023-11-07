@@ -3,8 +3,8 @@ import { InputStrDTO } from './dto/input.dto';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
-import { DynamoDBClient, QueryCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
-import { PutCommand, GetCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
+import { PutCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import * as log4js from "log4js";
 
 var logger = log4js.getLogger("postal")
@@ -24,7 +24,7 @@ const client = new DynamoDBClient({
                                         secretAccessKey: "key",
                                     }
                                 });
-export const docClient = DynamoDBDocumentClient.from(client);
+const docClient = DynamoDBDocumentClient.from(client);
 
 @Injectable()
 export class PostalService {
