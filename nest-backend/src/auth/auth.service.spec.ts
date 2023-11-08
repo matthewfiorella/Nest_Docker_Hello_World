@@ -5,7 +5,6 @@ import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstant } from './constants';
 import { JwtStrategy } from './jwt.strategy';
 describe('AuthService', () => {
   let service: AuthService;
@@ -13,11 +12,7 @@ describe('AuthService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [UsersModule, 
-        PassportModule, 
-        JwtModule.register({
-          secret: jwtConstant.secret,
-          signOptions: { expiresIn: '1d' },
-          }),
+        PassportModule.register({ defaultStrategy: 'jwt' })
         ],
       providers: [AuthService, LocalStrategy, JwtStrategy],
       controllers: [AuthController],

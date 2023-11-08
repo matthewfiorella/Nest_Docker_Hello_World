@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import  { withRouter, useHistory } from 'react-router-dom';
 import useToken from '../../customHooks/useToken';
+import { useAuth0 } from '@auth0/auth0-react';
 function Calc(): JSX.Element {
+    const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
     let history = useHistory();
     interface IValues {
         [key: string]: any;
@@ -10,7 +12,7 @@ function Calc(): JSX.Element {
         success: boolean,
         value: string
     }
-    const { token, setToken } = useToken();
+    const [ token, setToken ] = useState<string>();
     const [val, setVal] = useState<IValues>([])
     const [loading, setLoading] = useState<boolean>(false);
     const [submitResult, setSubmitResult] = useState<subResult>({
@@ -32,21 +34,18 @@ function Calc(): JSX.Element {
     }
 
     const submitform = async (formData: {}) => {
-        const tokenString = sessionStorage.getItem('token');
-        let dummy = "placeholder"
-        if (tokenString) {
-            dummy = tokenString
-        }
-        const userToken = JSON.parse(dummy);
-        const tokenPractical = userToken?.access_token
         try {
+            const accessToken = await getAccessTokenSilently({
+                authorizationParams: {
+                  audience: "https://sample-api.demo.com"
+            }});
             const response = await fetch( "http://localhost:8080/sqrt", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({
                     "Content-Type": "application/json",
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + tokenPractical,
+                    "Authorization": "Bearer " + accessToken,
                 }),
                 body: JSON.stringify(formData)
             });
@@ -69,6 +68,7 @@ function Calc(): JSX.Element {
         e.preventDefault();
         setFormValues({ [e.currentTarget.name]: e.currentTarget.value })
     }
+    
     return (
         <div>
         <div className={"col-md-12 form-wrapper"}>
