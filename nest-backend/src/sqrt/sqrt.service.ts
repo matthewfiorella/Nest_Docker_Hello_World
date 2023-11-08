@@ -13,9 +13,14 @@ logger.debug("Sqrt Information Log")
 export class SqrtService {
     
   async calcSqrt(inputStrDTO: InputStrDTO): Promise<number> {
-    logger.debug("Calculating Square root of: " + inputStrDTO.input)
-    const numericalInput : number = Number(inputStrDTO.input);
-    logger.debug("The Square Root is: " + Math.sqrt(numericalInput))
-    return Math.sqrt(numericalInput);
+    try {
+      logger.debug("Calculating Square root of: " + inputStrDTO.input)
+      const numericalInput : number = Number(inputStrDTO.input);
+      logger.debug("The Square Root is: " + Math.sqrt(numericalInput))
+      return Math.sqrt(numericalInput);
+    } catch (err) {
+      logger.debug(err)
+      return -1
+    }
   }  
 }

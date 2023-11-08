@@ -26,8 +26,9 @@ export default function Login( {setToken}: {setToken: (arg: userTokenType) => vo
       username: username,
       password: password
     });
-    console.log(token)
-    setToken(token);
+    if (token) {
+      setToken(token.tokens.AccessToken);
+    }
   }
 
   return(

@@ -37,8 +37,7 @@ function Calc(): JSX.Element {
         if (tokenString) {
             dummy = tokenString
         }
-        const userToken = JSON.parse(dummy);
-        const tokenPractical = userToken?.access_token
+        const tokenPractical = dummy
         try {
             const response = await fetch( "http://localhost:8080/sqrt", {
                 method: "POST",

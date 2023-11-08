@@ -10,6 +10,14 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import * as bcrypt from 'bcrypt'
 import { credentialInterface } from './interfaces/credentials.interface';
+import { CognitoJwtVerifier } from "aws-jwt-verify";
+
+// Verifier that expects valid access tokens:
+const verifier = CognitoJwtVerifier.create({
+  userPoolId: "eu-north-1_bCStU3PvI",
+  tokenUse: "access",
+  clientId: "70mcdsr4svtmll851ehcccv7lj",
+});
 
 const cognito = new CognitoIdentityProviderClient({
     region: "eu-north-1",
@@ -110,8 +118,16 @@ export class UsersController {
         }
         const command = new InitiateAuthCommand(input)
         const response = await cognito.send(command)
-        return {
-            tokens: response.AuthenticationResult
+        try {
+            await verifier.verify(
+              response.AuthenticationResult.AccessToken // the JWT as string
+            )
+            return {
+                tokens: response.AuthenticationResult
+            }
+        } 
+        catch {
+            return null;
         }
     }
 } 
