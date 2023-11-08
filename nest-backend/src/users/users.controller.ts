@@ -11,6 +11,7 @@ import {
 import * as bcrypt from 'bcrypt'
 import { credentialInterface } from './interfaces/credentials.interface';
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+import { formToJSON } from 'axios';
 
 // Verifier that expects valid access tokens:
 const verifier = CognitoJwtVerifier.create({
@@ -49,28 +50,7 @@ export class UsersController {
                     hashedPassword,
                 );
                 res(result)
-                const params = {
-                    ClientId: "70mcdsr4svtmll851ehcccv7lj",
-                    Username: username,
-                    Password: password,
-                    UserAttributes: [
-                        {
-                            Name: "name",
-                            Value: username,
-                        },
-                        {
-                            Name: "email",
-                            Value: email,
-                        },
-                        {
-                            Name: "phone_number",
-                            Value: "+16312455942",
-                        },
-
-                    ],
-                };
-                const command = new SignUpCommand(params);
-                await cognito.send(command);
+                await this.usersService.addUserCognito(username, password, email)
             } catch (error) {
                 rej(error)
             }
@@ -84,50 +64,14 @@ export class UsersController {
         if (!existingUser.success) {
             return {
                 isError: true,
-                message: "User Doesn't Exists"
+                message: "User Doesn't Exist"
             }
         }
-        const commandConfirmSignUp = new ConfirmSignUpCommand({
-            ClientId: "70mcdsr4svtmll851ehcccv7lj",
-            ConfirmationCode: code,
-            Username: username
-          });
-          await cognito.send(commandConfirmSignUp)
-            .then((data) => {
-              return data;
-            })
-            .catch((err) => {
-              return err;
-            });
-          return {
-              success: true,
-              message: "User verified successfully",
-           }
+        return await this.usersService.confirmUserCognito(code, username)
     }
 
     @Post('/auth')
     async authUser( @Body('username') username: string, @Body('password') password: string) {
-        const authflow: AuthFlowType = "USER_PASSWORD_AUTH"
-        const input = {
-            "AuthFlow": authflow,
-            "AuthParameters": {
-                "USERNAME": username,
-                "PASSWORD": password,
-            },
-            "ClientId": "70mcdsr4svtmll851ehcccv7lj",
-        }
-        const command = new InitiateAuthCommand(input)
-        const response = await cognito.send(command)
-        try {
-            await verifier.verify(
-              response.AuthenticationResult.AccessToken // the JWT as string
-            )
-            return {
-                tokens: response.AuthenticationResult
-            }
-        } 
-        catch {
-            return null;
-        }
+        return await this.usersService.authUser(username, password)
     }
 } 

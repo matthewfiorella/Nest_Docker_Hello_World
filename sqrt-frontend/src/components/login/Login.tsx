@@ -24,7 +24,7 @@ export default function Login( {setToken}: {setToken: (arg: userTokenType) => vo
     e.preventDefault();
     const token = await loginUser({
       username: username,
-      password: password
+      password: password,
     });
     if (token) {
       setToken(token.tokens.AccessToken);
