@@ -17,7 +17,7 @@ logger.debug("Postal Information Log")
 // Move to separate file
 const client = new DynamoDBClient({
                                     region: "eu-north-1", 
-                                    endpoint: "http://dynamodb-local:8000/",
+                                    endpoint: "https://dynamo-database-zhsajgp3nq-lz.a.run.app/",
                                     credentials: {
                                         sessionToken: "token",
                                         accessKeyId: "id",
