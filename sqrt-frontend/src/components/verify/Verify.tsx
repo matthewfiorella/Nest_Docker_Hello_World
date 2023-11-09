@@ -18,7 +18,7 @@ function Verify(): JSX.Element {
 
     const submitform = async (formData: {}) => {
         try {
-            const response = await fetch( "http://localhost:8080/users/confirmation", {
+            const response = await fetch( "https://nest-backend-zhsajgp3nq-lz.a.run.app/users/confirmation", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({

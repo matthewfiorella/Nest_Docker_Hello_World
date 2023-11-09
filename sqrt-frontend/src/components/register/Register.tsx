@@ -18,7 +18,7 @@ import useToken from '../../customHooks/useToken';
 import { useHistory } from 'react-router';
 
 async function loginUser(credentials: {}) {
-    return fetch('http://localhost:8080/auth/login', {
+    return fetch('https://nest-backend-zhsajgp3nq-lz.a.run.app/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ async function loginUser(credentials: {}) {
    }
 
 async function registerUser(credentials: {}) {
-    return fetch('http://localhost:8080/users/signup', {
+    return fetch('https://nest-backend-zhsajgp3nq-lz.a.run.app/users/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

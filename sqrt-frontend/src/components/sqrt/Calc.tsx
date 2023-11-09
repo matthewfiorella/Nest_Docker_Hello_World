@@ -39,7 +39,7 @@ function Calc(): JSX.Element {
         }
         const tokenPractical = dummy
         try {
-            const response = await fetch( "http://localhost:8080/sqrt", {
+            const response = await fetch( "https://nest-backend-zhsajgp3nq-lz.a.run.app/sqrt", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({

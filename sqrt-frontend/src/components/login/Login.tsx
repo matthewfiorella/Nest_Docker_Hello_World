@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { userTokenType } from '../../customHooks/userTokenInterface';
 
 async function loginUser(credentials: {}) {
-    return fetch('http://localhost:8080/users/auth', {
+    return fetch('https://nest-backend-zhsajgp3nq-lz.a.run.app/users/auth', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
