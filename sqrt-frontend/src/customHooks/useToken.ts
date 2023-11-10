@@ -5,7 +5,7 @@ export default function useToken() {
     const tokenString = sessionStorage.getItem('token');
     if( tokenString ) {
       const userToken = JSON.parse(tokenString);
-      return userToken?.access_token
+      return userToken
     }
     return null
   };
@@ -20,6 +20,6 @@ export default function useToken() {
   };
   return {
     setToken: saveToken,
-    token
+    token, 
   }
 }

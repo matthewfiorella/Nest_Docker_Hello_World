@@ -16,7 +16,6 @@ import Verify from './components/verify/Verify';
 function App(): JSX.Element {
   
   const { token, setToken } = useToken();
-
   return (
     <div className="App">
         <div className={'container'}>
@@ -27,8 +26,11 @@ function App(): JSX.Element {
             <Route exact path={"/postal"} component={Postal} />
             <Route exact path={"/"} component={Root} />
             <Route exact path={"/support"} component={Support} />
-            <Route exact path={"/login"} component={() => <Login setToken={setToken} />} />
-            <Route exact path={"/register"} component={Register} />
+            <Route exact path={"/login"} component={() => { 
+              if(token) {return <Root/>} else {return <Login setToken={setToken}/>} }} />
+            <Route exact path={"/register"} component={() => { 
+              if(token) {return <Root/>} else {return <Register/>} }}
+              />
             <Route exact path={"/verify"} component={Verify} />
             <Route path={"*"} component={NotFound} />
           </Switch>

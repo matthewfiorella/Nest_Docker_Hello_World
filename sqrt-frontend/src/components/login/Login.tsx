@@ -2,6 +2,7 @@ import React, { ReactNode, useState }  from 'react';
 import './Login.css';
 import PropTypes from 'prop-types';
 import { userTokenType } from '../../customHooks/userTokenInterface';
+import { useHistory } from 'react-router';
 
 async function loginUser(credentials: {}) {
     return fetch('http://localhost:8080/users/auth', {
@@ -13,12 +14,16 @@ async function loginUser(credentials: {}) {
     })
       .then( data => {
          return data.json()
+        }, err => {
+          console.log(err)
         })
    }
    
 export default function Login( {setToken}: {setToken: (arg: userTokenType) => void}) {
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [loginFailure, setLoginFailure] = useState<boolean>(false)
+  const history = useHistory()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -26,9 +31,15 @@ export default function Login( {setToken}: {setToken: (arg: userTokenType) => vo
       username: username,
       password: password,
     });
-    if (token) {
+    if (token && token.tokens) {
       setToken(token.tokens.AccessToken);
+      setLoginFailure(false)
+      history.push("/")
     }
+    else {
+      setLoginFailure(true)
+    }
+
   }
 
   return(
@@ -97,6 +108,9 @@ export default function Login( {setToken}: {setToken: (arg: userTokenType) => vo
               Login
             </button>
           </div>
+          {loginFailure && <div className="d-flex justify-content-center">
+            Incorrect Credentials!
+          </div>}
         </form>
       </div>
     </div>

@@ -8,14 +8,17 @@ function Calc(): JSX.Element {
     }
     interface subResult {
         success: boolean,
-        value: string
+        value: string,
+        auth: boolean
     }
     const { token, setToken } = useToken();
     const [val, setVal] = useState<IValues>([])
     const [loading, setLoading] = useState<boolean>(false);
+    const [warning, setWarning] = useState<boolean>(false);
     const [submitResult, setSubmitResult] = useState<subResult>({
         success: false,
-        value: "Input a Number"
+        value: "",
+        auth: false,
     });
 
     const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -33,11 +36,6 @@ function Calc(): JSX.Element {
 
     const submitform = async (formData: {}) => {
         const tokenString = sessionStorage.getItem('token');
-        let dummy = "placeholder"
-        if (tokenString) {
-            dummy = tokenString
-        }
-        const tokenPractical = dummy
         try {
             const response = await fetch( "http://localhost:8080/sqrt", {
                 method: "POST",
@@ -45,19 +43,29 @@ function Calc(): JSX.Element {
                 headers: new Headers({
                     "Content-Type": "application/json",
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + tokenPractical,
+                    "Authorization": "Bearer " + tokenString,
                 }),
                 body: JSON.stringify(formData)
             });
-            const calc = (await response.json()).sqrt
+            const result = (await response.json())
+            if (result.statusCode && result.statusCode != 200) {
+                return ({
+                    success: false,
+                    auth: false,
+                    value: "Not Authorized!"
+                })
+            }
+            const calc = result.sqrt
             return ({
                 success: response.ok,
+                auth: true,
                 value: calc
             });
         } catch (ex) {
             return ({
                 success: false,
-                value: -1
+                auth: false,
+                value: "Submission Error"
             });
         }
     }
@@ -66,6 +74,12 @@ function Calc(): JSX.Element {
     }
     const handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
         e.preventDefault();
+        if (isNaN(Number(e.currentTarget.value))) {
+            setWarning(true)
+        }
+        else {
+            setWarning(false)
+        }
         setFormValues({ [e.currentTarget.name]: e.currentTarget.value })
     }
     return (
@@ -95,9 +109,21 @@ function Calc(): JSX.Element {
                         <span className="fa fa-circle-o-notch fa-spin" />
                     }
                 </div>
-                <div className="d-flex justify-content-center">
-                    {submitResult.value}
-                </div>
+                {warning && (
+                    <div className="d-flex justify-content-center">
+                        Not valid Input! Please input a Number!
+                    </div>
+                )}
+                {submitResult.success && !warning && 
+                    <div className="d-flex justify-content-center">
+                        Most Recent Result: {submitResult.value}
+                    </div>
+                }
+                {!submitResult.success && !submitResult.auth && 
+                    <div className="d-flex justify-content-center">
+                        {submitResult.value}
+                    </div>
+                }
             </form>
         </div>
         </div>

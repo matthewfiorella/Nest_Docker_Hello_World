@@ -19,7 +19,7 @@ export class HttpBearerStrategy extends PassportStrategy(Strategy) {
                     const payload = await verifier.verify(modToken)
                     return done(null, payload)
                 } catch (err) {
-                    return done(err)
+                    return done(null, false)
                 }}
             );
     }

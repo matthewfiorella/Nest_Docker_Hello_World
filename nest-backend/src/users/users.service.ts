@@ -148,11 +148,15 @@ export class UsersService {
               response.AuthenticationResult.AccessToken // the JWT as string
             )
             return {
+                success: true,
                 tokens: response.AuthenticationResult
             }
         } 
         catch {
-            return null;
+            return {
+                success: false,
+                tokens: null
+            };
         }
     }
     
