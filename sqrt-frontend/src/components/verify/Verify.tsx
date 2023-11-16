@@ -18,7 +18,7 @@ function Verify(): JSX.Element {
 
     const submitform = async (formData: {}) => {
         try {
-            const response = await fetch( "http://localhost:8080/users/confirmation", {
+            const response = await fetch( "http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8080/users/confirmation", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({
