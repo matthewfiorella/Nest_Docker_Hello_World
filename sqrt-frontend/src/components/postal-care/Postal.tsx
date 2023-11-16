@@ -40,7 +40,7 @@ function Postal(): JSX.Element {
 
     const submitform = async (formData: {}) => {
         try {
-            const response = await fetch( "http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8080/postal", {
+            const response = await fetch( "https://backend.spikeappdemo.com/postal", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({
@@ -70,21 +70,24 @@ function Postal(): JSX.Element {
     }
 
     useEffect( () => {
-        fetch( "http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8080/postal").then( (val: Response) => {
-            val.json().then( (data) => {
-                const arr: resHistory[] = new Array()
-                for(let i = 0; i < 5; i++) {
-                    const hist: resHistory = {
-                        postal: String(data[i]?.PostalCode?.S),
-                        health: String(data[i]?.PrimaryHealthcareTrust?.S),
-                        time: Number(data[i]?.EntryTime?.N)
+        try {
+            fetch( "https://backend.spikeappdemo.com/postal").then( (val: Response) => {
+                val.json().then( (data) => {
+                    const arr: resHistory[] = new Array()
+                    for(let i = 0; i < 5; i++) {
+                        const hist: resHistory = {
+                            postal: String(data[i]?.PostalCode?.S),
+                            health: String(data[i]?.PrimaryHealthcareTrust?.S),
+                            time: Number(data[i]?.EntryTime?.N)
+                        }
+                        arr.push(hist)
                     }
-                    arr.push(hist)
-                }
-                setPostalHistory(arr)
+                    setPostalHistory(arr)
+                })
             })
-        })
-
+        } catch (err) {
+            console.log(err)
+        }    
     }, [submitResult])
 
     return (

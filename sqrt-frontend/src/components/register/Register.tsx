@@ -18,7 +18,7 @@ import useToken from '../../customHooks/useToken';
 import { useHistory } from 'react-router';
 
 async function loginUser(credentials: {}) {
-    return fetch('http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8080/auth/login', {
+    return fetch('https://backend.spikeappdemo.com/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ async function loginUser(credentials: {}) {
    }
 
 async function registerUser(credentials: {}) {
-    return fetch('http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8080/users/signup', {
+    return fetch('https://backend.spikeappdemo.com/users/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

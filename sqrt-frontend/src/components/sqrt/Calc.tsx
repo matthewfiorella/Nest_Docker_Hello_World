@@ -37,7 +37,7 @@ function Calc(): JSX.Element {
     const submitform = async (formData: {}) => {
         const tokenString = sessionStorage.getItem('token');
         try {
-            const response = await fetch( "http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8080/sqrt", {
+            const response = await fetch( "https://backend.spikeappdemo.com/sqrt", {
                 method: "POST",
                 mode: "cors",
                 headers: new Headers({

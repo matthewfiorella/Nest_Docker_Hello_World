@@ -17,7 +17,7 @@ logger.debug("Postal Information Log")
 // Move to separate file
 const client = new DynamoDBClient({
                                     region: "eu-north-1", 
-                                    endpoint: "http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8000/",
+                                    endpoint: "https://backend.spikeappdemo.com:8000/",
                                     credentials: {
                                         sessionToken: "token",
                                         accessKeyId: "id",
@@ -35,7 +35,7 @@ export class PostalService {
         try {
             logger.debug("Retrieving health trust for postalcode: " + postalCode)
             const { data } = await firstValueFrom(
-                this.httpService.get<string>('http://api.postcodes.io/postcodes/' + postalCode).pipe(
+                this.httpService.get<string>('api.postcodes.io/postcodes/' + postalCode).pipe(
                     catchError((error: AxiosError) => {
                         logger.debug(error)
                         throw "Error!";

@@ -5,7 +5,7 @@ import { userTokenType } from '../../customHooks/userTokenInterface';
 import { useHistory } from 'react-router';
 
 async function loginUser(credentials: {}) {
-    return fetch('http://ec2-16-171-2-225.eu-north-1.compute.amazonaws.com:8080/users/auth', {
+    return fetch('https://backend.spikeappdemo.com/users/auth', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
